@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: customer-api
+    spec:
+      containers:
+      - image: sureshnikuliya01/customer-api:v1.0
+        name: customer-api
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+          - containerPort: 5001
+        volumeMounts:
+        - name: app-persistent-storage
+          mountPath: /var/lib/app
+        env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_PASSWORD
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: DB_HOST
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: DB_PORT
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: DB_NAME 
+          - name: UPLOAD_FOLDER
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: UPLOAD_FOLDER 
+      volumes:
+      - name: app-persistent-storage
+        persistentVolumeClaim:
+          claimName: persistent-volume-claim      
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer-api
+spec:
+  ports:
+  - port: 5001
+    protocol: TCP
+  selector:
+    app: customer
+  type: ClusterIP

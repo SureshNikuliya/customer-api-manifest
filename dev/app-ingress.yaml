@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1  
+kind: Ingress  
+metadata:
+  name: customer-api
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:  
+  rules:
+    - host: customer-api.com
+      http:   
+        paths:   
+          - path: /   
+            pathType: Prefix   
+            backend:   
+              service:  
+                name: customer-api
+                port:  
+                  number: 5001

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:  
+  name: mysql-set
+spec:
+  selector:
+    matchLabels:
+      app: mysql-set
+  serviceName: "mysql-set"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: mysql-set
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mysql-set
+        image: mysql:5.6
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+          - name: mysql-persistent-storage
+            mountPath: /var/lib/mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_PASSWORD
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: persistent-volume-claim
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-set
+spec:
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+    nodePort: 32006
+  type: NodePort
+  selector:
+    app: mysql-set
