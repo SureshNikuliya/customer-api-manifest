@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:  
   rules:
-    - host: customer-api.com
+    - host: customer-app.poc.com
       http:   
         paths:   
           - path: /   
