@@ -15,12 +15,12 @@ spec:
         app: customer-api
     spec:
       containers:
-      - image: sureshnikuliya01/customer-api:v1.1
+      - image: sureshnikuliya01/customer-api:v1.2
         name: customer-api
         imagePullPolicy: Always
         resources: {}
         ports:
-          - containerPort: 5001
+          - containerPort: 5000
         volumeMounts:
         - name: app-persistent-storage
           mountPath: /var/lib/app
@@ -69,7 +69,7 @@ metadata:
   name: customer-api
 spec:
   ports:
-  - port: 5001
+  - port: 5000
     protocol: TCP
   selector:
     app: customer-api
