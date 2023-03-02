@@ -15,7 +15,7 @@ spec:
         app: customer-api
     spec:
       containers:
-      - image: sureshnikuliya01/customer-api:v1.0
+      - image: sureshnikuliya01/customer-api:v1.1
         name: customer-api
         imagePullPolicy: Always
         resources: {}
