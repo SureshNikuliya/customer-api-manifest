@@ -15,4 +15,4 @@ spec:
               service:  
                 name: customer-api
                 port:  
-                  number: 5001
+                  number: 5000
